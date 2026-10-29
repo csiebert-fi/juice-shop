@@ -115,9 +115,15 @@ export class CodingChallengeFixItComponent implements OnInit, AfterViewInit, OnD
     })
   }
 
+  private secureRandom (): number {
+    const array = new Uint32Array(1)
+    crypto.getRandomValues(array)
+    return array[0] / (0xFFFFFFFF + 1)
+  }
+
   shuffle (): void {
     this.randomFixes = this.fixes()
-      .map((fix, index) => ({ fix, index, sort: Math.random() }))
+      .map((fix, index) => ({ fix, index, sort: this.secureRandom() }))
       .sort((a, b) => a.sort - b.sort)
       .map(({ fix, index }) => ({ fix, index }))
   }
